@@ -5,14 +5,30 @@ import Post from './Post.vue'
 
 const {
     selected,
-    setSelected,
-    fetchPosts,
     searchedPosts,
+    fetchPosts,
+    setSelected
 } = usePosts()
 
-const onSelect = (value) => {
-    setSelected(value)
-}
+const
+    onChange = (e) => {
+        const
+            key = e.key,
+            keys = {
+                'ArrowUp': selected.value.id > 0 ? selected.value.id -1 : 1,
+                'ArrowDown': selected.value.id < 10 ? selected.value.id + 1 : 10
+            },
+            s = keys[key]
+
+        if (!s) {
+            return
+        }
+        
+        const p = searchedPosts.value[s - 1]
+        console.log(p);
+
+        setSelected(p)
+    }
 
 onMounted(() => {
     fetchPosts()
@@ -21,11 +37,12 @@ onMounted(() => {
 
 <template>
     <div class='posts'>
-        <Post v-for='post in searchedPosts'
+        <Post v-for='(post, index) in searchedPosts'
+            :tabindex='index'
             :key='post.id'
             :post='post'
-            :class='{selected: post === selected}'
-            @click='onSelect(post)'
+            @keyup.up='onChange($event)'
+            @keyup.down='onChange($event)'
         />
     </div>
 </template>

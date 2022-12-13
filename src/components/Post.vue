@@ -1,8 +1,8 @@
 <script setup>
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
 import {usePosts} from '@/hooks/posts.js'
 
-const { selected } = usePosts()
+const { selected, setSelected } = usePosts()
 
 defineProps({
     post: {
@@ -17,7 +17,6 @@ const
 
 const
     onClick = () => showBody.value = !showBody.value
-
 </script>
 
 <template>
@@ -25,6 +24,9 @@ const
         :class='["post", { selected: post == selected }]'
         @mouseenter='showExpand = true'
         @mouseleave='showExpand = false'
+        @keyup.left='showBody = true'
+        @keyup.right='showBody = false'
+        @click='setSelected(post)'
     >
         <div class='title-group'>
             <span class='id'>{{ post.id }}</span>
