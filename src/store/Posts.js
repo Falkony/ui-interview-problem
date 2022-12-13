@@ -10,6 +10,11 @@ export default {
         searchQuerry: '',
         searchHistory: [],
     },
+    getters: {
+        searchedPosts(state) {
+            return state.posts.filter(post => post.title.toLowerCase().includes(state.searchQuerry.toLowerCase()))
+        }
+    },
     mutations: {
         setPosts(state, posts) {
             state.posts = posts
@@ -44,6 +49,5 @@ export default {
             })
         }
     },
-    getters: {},
     namespaced: true
 }

@@ -1,5 +1,5 @@
 import {useStore} from 'vuex'
-import {onMounted, computed} from 'vue'
+import {computed} from 'vue'
 
 export function usePosts() {
     const
@@ -11,6 +11,8 @@ export function usePosts() {
         total = computed(() => store.state.post.total),
         searchQuerry = computed(() => store.state.post.searchQuerry),
         searchHistory = computed(() => store.state.post.searchHistory),
+        // -- getters -- //
+        searchedPosts = computed(() => store.getters['post/searchedPosts']),
         // -- mutations -- //
         setPosts = (value) => store.commit('post/setPosts', value),
         setSelected = (value) => store.commit('post/setSelected', value),
@@ -21,10 +23,6 @@ export function usePosts() {
         // -- actions -- //
         fetchPosts = () => store.dispatch('post/fetchPosts')
 
-onMounted(() => {
-    fetchPosts()
-})
-
     return {
         posts,
         selected,
@@ -32,11 +30,13 @@ onMounted(() => {
         total,
         searchQuerry,
         searchHistory,
+        searchedPosts,
         setPosts,
         setSelected,
         setPage,
         setTotal,
         setSearchQuerry,
-        setSearchHistory
+        setSearchHistory,
+        fetchPosts
     }
 }

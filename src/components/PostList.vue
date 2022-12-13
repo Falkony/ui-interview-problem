@@ -1,22 +1,27 @@
 <script setup>
+import {onMounted} from 'vue'
 import {usePosts} from '@/hooks/posts.js'
 import Post from './Post.vue'
 
-const { 
-    posts,
+const {
     selected,
-    setSelected
+    setSelected,
+    fetchPosts,
+    searchedPosts,
 } = usePosts()
 
 const onSelect = (value) => {
     setSelected(value)
 }
 
+onMounted(() => {
+    fetchPosts()
+})
 </script>
 
 <template>
     <div class='posts'>
-        <Post v-for='post in posts'
+        <Post v-for='post in searchedPosts'
             :key='post.id'
             :post='post'
             :class='{selected: post === selected}'
@@ -26,9 +31,4 @@ const onSelect = (value) => {
 </template>
 
 <style lang="scss" scoped>
-.posts {
-    padding: 2em 0;
-    max-width: 1024px;
-    margin: 0 auto;
-}
 </style>
