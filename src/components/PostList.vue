@@ -1,24 +1,34 @@
 <script setup>
-import {onMounted, computed} from 'vue'
-import {useStore} from 'vuex'
+import {usePosts} from '@/hooks/posts.js'
+import Post from './Post.vue'
 
-const
-    store = useStore(),
-    posts = computed(() => store.state.post.posts)
+const { 
+    posts,
+    selected,
+    setSelected
+} = usePosts()
 
-console.log(posts);
+const onSelect = (value) => {
+    setSelected(value)
+}
 
-onMounted(() => {
-    store.dispatch('post/fetchPosts')
-})
 </script>
 
 <template>
-    <div>
-        <pre>{{ posts }}</pre>
+    <div class='posts'>
+        <Post v-for='post in posts'
+            :key='post.id'
+            :post='post'
+            :class='{selected: post === selected}'
+            @click='onSelect(post)'
+        />
     </div>
 </template>
 
 <style lang="scss" scoped>
-
+.posts {
+    padding: 2em 0;
+    max-width: 1024px;
+    margin: 0 auto;
+}
 </style>
